@@ -1,4 +1,8 @@
 # hello-world
 ex0001
 
-new test
+Hi My first ex!!
+Hi My first ex!!
+
+
+
