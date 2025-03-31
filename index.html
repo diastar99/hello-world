@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>판매 가격 계산기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f3ff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .calculator {
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(to right, #7c3aed, #ec4899);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .content {
+            padding: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            transition: all 0.3s;
+            padding-right: 50px;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+
+        .input-wrapper input::placeholder {
+            color: #d1d5db;
+        }
+
+        .input-suffix {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            font-weight: 700;
+            color: #9ca3af;
+        }
+
+        .results {
+            background-color: white;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .stat-box {
+            flex: 1;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-box.margin {
+            background-color: #ede9fe;
+        }
+
+        .stat-box.commission {
+            background-color: #fce7f3;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #4c1d95;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 900;
+            color: #4c1d95;
+        }
+
+        .stat-box.commission .stat-label {
+            color: #831843;
+        }
+
+        .stat-box.commission .stat-value {
+            color: #831843;
+        }
+
+        .final-price {
+            background: linear-gradient(to right, #7c3aed, #ec4899);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .final-price-label {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .final-price-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+        }
+
+        .reset-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #7c3aed, #ec4899);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .reset-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .reset-button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 500px) {
+            .calculator {
+                border-radius: 12px;
+            }
+
+            .content {
+                padding: 16px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .input-wrapper input {
+                font-size: 18px;
+                padding: 14px;
+            }
+
+            .final-price-value {
+                font-size: 28px;
+            }
+
+            .stats-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="header">
+            <h1>판매 가격 계산기</h1>
+        </div>
+        <div class="content">
+            <div class="input-group">
+                <label for="cost">원가 입력</label>
+                <div class="input-wrapper">
+                    <input 
+                        type="number" 
+                        id="cost" 
+                        placeholder="원가를 입력하세요" 
+                        autocomplete="off"
+                    >
+                    <span class="input-suffix">원</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="margin">마진 금액</label>
+                <div class="input-wrapper">
+                    <input 
+                        type="number" 
+                        id="margin" 
+                        placeholder="희망 마진 금액을 입력하세요" 
+                        autocomplete="off"
+                    >
+                    <span class="input-suffix">원</span>
+                </div>
+            </div>
+
+            <div class="results">
+                <div class="stats-row">
+                    <div class="stat-box margin">
+                        <div class="stat-label">마진율</div>
+                        <div class="stat-value" id="margin-percentage">0%</div>
+                    </div>
+                    <div class="stat-box commission">
+                        <div class="stat-label">수수료</div>
+                        <div class="stat-value">15%</div>
+                    </div>
+                </div>
+
+                <div class="final-price">
+                    <div class="final-price-label">최종 판매 가격</div>
+                    <div class="final-price-value" id="selling-price">0원</div>
+                </div>
+            </div>
+
+            <button class="reset-button" id="reset-button">초기화</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM 요소 가져오기
+        const costInput = document.getElementById('cost');
+        const marginInput = document.getElementById('margin');
+        const marginPercentageElement = document.getElementById('margin-percentage');
+        const sellingPriceElement = document.getElementById('selling-price');
+        const resetButton = document.getElementById('reset-button');
+
+        // 입력 이벤트 리스너 추가
+        costInput.addEventListener('input', calculatePrice);
+        marginInput.addEventListener('input', calculatePrice);
+        resetButton.addEventListener('click', resetCalculator);
+
+        // 가격 계산 함수
+        function calculatePrice() {
+            const cost = parseFloat(costInput.value) || 0;
+            const marginAmount = parseFloat(marginInput.value) || 0;
+            
+            if (cost === 0) {
+                marginPercentageElement.textContent = '0%';
+                sellingPriceElement.textContent = '0원';
+                return;
+            }
+
+            // 수수료율
+            const commissionRate = 0.15;
+            
+            // 판매가 계산: (원가 + 마진) / (1 - 수수료율)
+            const sellingPrice = (cost + marginAmount) / (1 - commissionRate);
+            
+            // 마진율 계산: (마진 / 원가) * 100
+            const marginPercentage = (marginAmount / cost) * 100;
+            
+            // 결과 화면에 표시
+            marginPercentageElement.textContent = marginPercentage.toFixed(1) + '%';
+            sellingPriceElement.textContent = Math.round(sellingPrice).toLocaleString() + '원';
+        }
+
+        // 계산기 초기화
+        function resetCalculator() {
+            costInput.value = '';
+            marginInput.value = '';
+            marginPercentageElement.textContent = '0%';
+            sellingPriceElement.textContent = '0원';
+        }
+    </script>
+</body>
+</html>
